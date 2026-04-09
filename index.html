@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zynx Capital</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #ff2d75, #ff6fa5);
+    color: white;
+}
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Zynx Capital</h2>
+
+<!-- LOGIN -->
+<div id="loginCard" class="card">
+<h3>Login</h3>
+<input type="email" id="email" placeholder="Enter email">
+<button onclick="login()">Login</button>
+</div>
+
+<!-- TRADER DASHBOARD -->
+<div id="traderDashboard" class="hidden">
+<div class="card">
+<h3>Trader Dashboard</h3>
+<p id="welcome"></p>
+
+<input type="number" id="profit" placeholder="Enter profit">
+<button onclick="submitProfit()">Submit Performance</button>
+
+<p id="status"></p>
+</div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="hidden">
+<div class="card">
+<h3>Admin Dashboard</h3>
+<p>Welcome Admin</p>
+
+<div id="users"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+let adminEmail = "josephndungukamau23@gmail.com";
+
+function login() {
+    let email = document.getElementById("email").value;
+
+    localStorage.setItem("user", email);
+
+    if(email === adminEmail){
+        showAdmin();
+    } else {
+        showTrader(email);
+    }
+}
+
+function showTrader(email){
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("traderDashboard").classList.remove("hidden");
+    document.getElementById("welcome").innerText = "Welcome " + email;
+}
+
+function showAdmin(){
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("adminDashboard").classList.remove("hidden");
+    loadUsers();
+}
+
+function submitProfit(){
+    let email = localStorage.getItem("user");
+    let profit = document.getElementById("profit").value;
+
+    let data = JSON.parse(localStorage.getItem("data")) || [];
+
+    data.push({email, profit});
+
+    localStorage.setItem("data", JSON.stringify(data));
+
+    document.getElementById("status").innerText = "Submitted successfully";
+}
+
+function loadUsers(){
+    let data = JSON.parse(localStorage.getItem("data")) || [];
+
+    let html = "";
+
+    data.forEach(user => {
+        html += `<p>${user.email} - $${user.profit}</p>`;
+    });
+
+    document.getElementById("users").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
