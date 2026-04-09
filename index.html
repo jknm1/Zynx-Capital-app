@@ -9,137 +9,161 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #ff2d75, #ff6fa5);
+    background: #0a0a0a;
     color: white;
 }
 
-.container {
+/* NAV */
+nav {
+    display: flex;
+    justify-content: space-between;
     padding: 20px;
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ff2d75, #ff6fa5);
+    border: none;
+    color: white;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+}
+
+.gradient {
+    background: linear-gradient(135deg, #ff2d75, #ff6fa5);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #aaa;
+    margin-top: 10px;
+}
+
+/* SECTION */
+.section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .card {
-    background: white;
-    color: black;
+    background: #111;
     padding: 20px;
-    border-radius: 16px;
-    margin-top: 20px;
+    border-radius: 12px;
+    transition: 0.3s;
 }
 
-button {
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: black;
-    color: white;
-    width: 100%;
-    margin-top: 10px;
+.card:hover {
+    transform: translateY(-5px);
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+/* ANIMATION */
+.fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1s;
 }
 
-.hidden {
-    display: none;
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #777;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<nav>
+<div class="logo">Zynx Capital</div>
+<button class="btn">Apply</button>
+</nav>
 
-<h2>Zynx Capital</h2>
+<section class="hero fade">
+<h1>Trade <span class="gradient">Capital</span> Not Emotion</h1>
+<p>We fund disciplined traders through structured evaluation.</p>
+<button class="btn">Start Your Journey</button>
+</section>
 
-<!-- LOGIN -->
-<div id="loginCard" class="card">
-<h3>Login</h3>
-<input type="email" id="email" placeholder="Enter email">
-<button onclick="login()">Login</button>
+<section class="section fade">
+<h2>How It Works</h2>
+
+<div class="grid">
+<div class="card">Apply and get shortlisted</div>
+<div class="card">Complete 2-week Boot Camp</div>
+<div class="card">Get funded based on performance</div>
 </div>
+</section>
 
-<!-- TRADER DASHBOARD -->
-<div id="traderDashboard" class="hidden">
-<div class="card">
-<h3>Trader Dashboard</h3>
-<p id="welcome"></p>
+<section class="section fade">
+<h2>Trading Objectives</h2>
 
-<input type="number" id="profit" placeholder="Enter profit">
-<button onclick="submitProfit()">Submit Performance</button>
-
-<p id="status"></p>
+<div class="grid">
+<div class="card">Max Daily Loss: 5%</div>
+<div class="card">Max Drawdown: 10%</div>
+<div class="card">Profit Target: 8–10%</div>
 </div>
-</div>
+</section>
 
-<!-- ADMIN DASHBOARD -->
-<div id="adminDashboard" class="hidden">
-<div class="card">
-<h3>Admin Dashboard</h3>
-<p>Welcome Admin</p>
+<section class="section fade">
+<h2>Payout Structure</h2>
 
-<div id="users"></div>
+<div class="grid">
+<div class="card">Up to 40% profit split</div>
+<div class="card">Performance-based scaling</div>
+<div class="card">Consistent payouts</div>
 </div>
-</div>
+</section>
 
+<section class="section fade">
+<h2>FAQ</h2>
+
+<div class="grid">
+<div class="card">No, funding is not guaranteed</div>
+<div class="card">Yes, discipline matters more than profit</div>
+<div class="card">Boot Camp lasts 2 weeks</div>
 </div>
+</section>
+
+<footer>
+© Zynx Capital
+</footer>
 
 <script>
+const elements = document.querySelectorAll('.fade');
 
-let adminEmail = "josephndungukamau23@gmail.com";
-
-function login() {
-    let email = document.getElementById("email").value;
-
-    localStorage.setItem("user", email);
-
-    if(email === adminEmail){
-        showAdmin();
-    } else {
-        showTrader(email);
-    }
-}
-
-function showTrader(email){
-    document.getElementById("loginCard").classList.add("hidden");
-    document.getElementById("traderDashboard").classList.remove("hidden");
-    document.getElementById("welcome").innerText = "Welcome " + email;
-}
-
-function showAdmin(){
-    document.getElementById("loginCard").classList.add("hidden");
-    document.getElementById("adminDashboard").classList.remove("hidden");
-    loadUsers();
-}
-
-function submitProfit(){
-    let email = localStorage.getItem("user");
-    let profit = document.getElementById("profit").value;
-
-    let data = JSON.parse(localStorage.getItem("data")) || [];
-
-    data.push({email, profit});
-
-    localStorage.setItem("data", JSON.stringify(data));
-
-    document.getElementById("status").innerText = "Submitted successfully";
-}
-
-function loadUsers(){
-    let data = JSON.parse(localStorage.getItem("data")) || [];
-
-    let html = "";
-
-    data.forEach(user => {
-        html += `<p>${user.email} - $${user.profit}</p>`;
+window.addEventListener('scroll', () => {
+    elements.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if(top < window.innerHeight - 100){
+            el.classList.add('show');
+        }
     });
-
-    document.getElementById("users").innerHTML = html;
-}
-
+});
 </script>
 
 </body>
