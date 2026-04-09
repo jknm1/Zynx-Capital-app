@@ -1,0 +1,1 @@
+# Zynx-Capital-app
